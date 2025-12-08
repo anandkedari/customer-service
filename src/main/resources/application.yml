@@ -23,6 +23,17 @@ springdoc:
     path: /swagger-ui.html
     enabled: true
 
+# Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: always
+
 # Logging
 logging:
   level:
