@@ -56,3 +56,6 @@ coverage/
 test-results.json
 target/
 build/
+
+# Sentinel Framework
+.sentinel-config
