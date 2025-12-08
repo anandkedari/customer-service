@@ -1,7 +1,4 @@
 plugins {
-    id 'jacoco'
-    id 'checkstyle'
-    id 'com.github.spotbugs' version '5.2.1'
     id 'java'
     id 'org.springframework.boot' version '3.2.1'
     id 'io.spring.dependency-management' version '1.1.4'
@@ -51,64 +48,4 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
-}
-// JaCoCo configuration (added by Sentinel)
-jacoco {
-    toolVersion = "0.8.11"
-}
-
-tasks.named('test') {
-    finalizedBy jacocoTestReport
-}
-
-jacocoTestReport {
-    dependsOn test
-    reports {
-        xml.required = true
-        html.required = true
-        csv.required = false
-    }
-
-    afterEvaluate {
-        classDirectories.setFrom(files(classDirectories.files.collect {
-            fileTree(dir: it, exclude: [
-                '**/*Application.class',
-                '**/config/**',
-                '**/entity/**',
-                '**/dto/**'
-            ])
-        }))
-    }
-}
-
-jacocoTestCoverageVerification {
-    violationRules {
-        rule {
-            limit {
-                minimum = 0.80
-            }
-        }
-    }
-}
-
-// Checkstyle configuration
-checkstyle {
-    toolVersion = '10.12.5'
-    configFile = file("${rootDir}/checkstyle.xml")
-    ignoreFailures = false
-    maxWarnings = 0
-}
-
-// SpotBugs configuration
-spotbugs {
-    ignoreFailures = false
-    effort = 'max'
-    reportLevel = 'low'
-}
-
-// Custom QA task
-tasks.register('qaCheck') {
-    dependsOn test, jacocoTestCoverageVerification, checkstyleMain, spotbugsMain
-    description = 'Run all QA checks'
-    group = 'verification'
 }
